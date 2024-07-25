@@ -5,7 +5,6 @@ const mbtiColors = {
     ESTJ: "#DC143C", ESFJ: "#CD5C5C", ENFJ: "#8B0000", ENTJ: "#B22222"
 };
 
-
 function showCalculator() {
     const mbti = document.getElementById('mbti-select').value;
     if (mbti) {
@@ -31,20 +30,17 @@ function resetCalculator() {
 
 function appendToDisplay(value) {
     document.getElementById('display').value += value;
-    playButtonSound();
     vibrateOnMobile();
 }
 
 function clearDisplay() {
     document.getElementById('display').value = '';
-    playButtonSound();
     vibrateOnMobile();
 }
 
 function backspace() {
     let display = document.getElementById('display');
     display.value = display.value.slice(0, -1);
-    playButtonSound();
     vibrateOnMobile();
 }
 
@@ -57,7 +53,6 @@ function calculateSquareRoot() {
     } catch (error) {
         display.value = '오류';
     }
-    playButtonSound();
     vibrateOnMobile();
 }
 
@@ -71,7 +66,6 @@ function calculate() {
     } catch (error) {
         display.value = '오류';
     }
-    playButtonSound();
     vibrateOnMobile();
 }
 
@@ -79,12 +73,6 @@ function addToHistory(entry) {
     let history = document.getElementById('history');
     history.innerHTML += entry + '<br>';
     history.scrollTop = history.scrollHeight;
-}
-
-function playButtonSound() {
-    const audio = document.getElementById('buttonSound');
-    audio.src = getRandomSound();
-    audio.play();
 }
 
 function vibrateOnMobile() {
