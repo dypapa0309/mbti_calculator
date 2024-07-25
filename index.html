@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI 맞춤형 계산기 | MBTI Customized Calculator</title>
+    <meta name="description" content="MBTI 유형별 맞춤 색상과 소리를 제공하는 웹 기반 계산기. Personalized web-based calculator with colors and sounds for each MBTI type.">
+    <meta name="keywords" content="MBTI, 계산기, 성격유형, 맞춤형, 웹앱, calculator, personality type, customized, web app">
+    <meta name="author" content="LSB">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-website-url.com/">
+    <meta property="og:title" content="MBTI 맞춤형 계산기 | MBTI Customized Calculator">
+    <meta property="og:description" content="MBTI 유형별 맞춤 색상과 소리를 제공하는 웹 기반 계산기. Personalized web-based calculator with colors and sounds for each MBTI type.">
+    <meta property="og:image" content="https://your-website-url.com/path-to-your-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-website-url.com/">
+    <meta property="twitter:title" content="MBTI 맞춤형 계산기 | MBTI Customized Calculator">
+    <meta property="twitter:description" content="MBTI 유형별 맞춤 색상과 소리를 제공하는 웹 기반 계산기. Personalized web-based calculator with colors and sounds for each MBTI type.">
+    <meta property="twitter:image" content="https://your-website-url.com/path-to-your-image.jpg">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="canonical" href="https://your-website-url.com/">
+</head>
+<body>
+    <div class="container">
+        <h1 class="main-title">MBTI 맞춤형 계산기 | MBTI Customized Calculator</h1>
+        <div id="mbti-selector">
+            <h2>당신의 MBTI를 설정하세요 | Set Your MBTI</h2>
+            <select id="mbti-select">
+                <option value="">MBTI 선택 | Select MBTI</option>
+                <option value="ISTJ">ISTJ</option>
+                <option value="ISFJ">ISFJ</option>
+                <option value="INFJ">INFJ</option>
+                <option value="INTJ">INTJ</option>
+                <option value="ISTP">ISTP</option>
+                <option value="ISFP">ISFP</option>
+                <option value="INFP">INFP</option>
+                <option value="INTP">INTP</option>
+                <option value="ESTP">ESTP</option>
+                <option value="ESFP">ESFP</option>
+                <option value="ENFP">ENFP</option>
+                <option value="ENTP">ENTP</option>
+                <option value="ESTJ">ESTJ</option>
+                <option value="ESFJ">ESFJ</option>
+                <option value="ENFJ">ENFJ</option>
+                <option value="ENTJ">ENTJ</option>
+            </select>
+            <button onclick="showCalculator()">계산기 보기 | View Calculator</button>
+        </div>
+        <p class="description">MBTI를 선택하면 해당 MBTI에 안정감을 주는 색상과 소리로 계산기 화면이 세팅됩니다. | The calculator will be set with colors and sounds that give comfort to your MBTI type.</p>
+        <div id="calculator-container" class="hidden">
+            <div id="calculator">
+                <div class="history" id="history"></div>
+                <input type="text" id="display" readonly>
+                <div class="buttons">
+                    <button onclick="clearDisplay()">C</button>
+                    <button onclick="backspace()">←</button>
+                    <button onclick="appendToDisplay('(')">(</button>
+                    <button onclick="appendToDisplay(')')">)</button>
+                    <button onclick="appendToDisplay('7')">7</button>
+                    <button onclick="appendToDisplay('8')">8</button>
+                    <button onclick="appendToDisplay('9')">9</button>
+                    <button onclick="appendToDisplay('+')">+</button>
+                    <button onclick="appendToDisplay('4')">4</button>
+                    <button onclick="appendToDisplay('5')">5</button>
+                    <button onclick="appendToDisplay('6')">6</button>
+                    <button onclick="appendToDisplay('-')">-</button>
+                    <button onclick="appendToDisplay('1')">1</button>
+                    <button onclick="appendToDisplay('2')">2</button>
+                    <button onclick="appendToDisplay('3')">3</button>
+                    <button onclick="appendToDisplay('*')">*</button>
+                    <button onclick="appendToDisplay('0')">0</button>
+                    <button onclick="appendToDisplay('.')">.</button>
+                    <button onclick="calculateSquareRoot()">√</button>
+                    <button onclick="appendToDisplay('/')">/</button>
+                    <button onclick="calculate()" class="equals">=</button>
+                </div>
+            </div>
+            <button id="change-mbti" onclick="showMBTISelector()">다른 MBTI 선택 | Choose Another MBTI</button>
+        </div>
+        <button id="who-made-this" onclick="window.open('https://linktr.ee/lsb.0214', '_blank')">Who made this app</button>
+    </div>
+    <audio id="buttonSound"></audio>
+    <script src="script.js"></script>
+</body>
+</html>
