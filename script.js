@@ -19,6 +19,8 @@ const mbtiColors = {
 
 let currentExpression = '';
 let lastResult = null;
+let resultDisplayed = false; // 계산 결과가 화면에 표시된 상태인지 여부를 추적
+let lastInputWasOperator = false; // 마지막 입력이 연산자였는지 여부를 추적
 
 function showCalculator() {
     const mbti = document.getElementById('mbti-select').value;
@@ -42,6 +44,8 @@ function showMBTISelector() {
 function resetCalculator() {
     currentExpression = '';
     lastResult = null;
+    resultDisplayed = false;
+    lastInputWasOperator = false;
     updateDisplay();
     document.getElementById('history').innerHTML = '';
 }
@@ -51,6 +55,21 @@ function updateDisplay() {
 }
 
 function appendToDisplay(value) {
+    if (resultDisplayed && !isNaN(value)) {
+        return; // 계산 결과가 표시된 상태에서 숫자를 입력하면 무시
+    }
+    if (resultDisplayed && isNaN(value)) {
+        resultDisplayed = false; // 연산자를 입력하면 기존 결과에 이어서 계산
+    }
+    if (isNaN(value)) {
+        if (lastInputWasOperator) {
+            return; // 연산자가 연속으로 입력되지 않도록 함
+        } else {
+            lastInputWasOperator = true; // 연산자가 입력되면 플래그 설정
+        }
+    } else {
+        lastInputWasOperator = false; // 숫자가 입력되면 플래그 해제
+    }
     currentExpression += value;
     updateDisplay();
     vibrateOnMobile();
@@ -59,12 +78,15 @@ function appendToDisplay(value) {
 function clearDisplay() {
     currentExpression = '';
     lastResult = null;
+    resultDisplayed = false;
+    lastInputWasOperator = false;
     updateDisplay();
     vibrateOnMobile();
 }
 
 function backspace() {
     currentExpression = currentExpression.slice(0, -1);
+    lastInputWasOperator = isNaN(currentExpression.slice(-1)); // 마지막 문자가 연산자인지 확인
     updateDisplay();
     vibrateOnMobile();
 }
@@ -74,6 +96,8 @@ function calculateSquareRoot() {
         const result = Math.sqrt(eval(currentExpression));
         addToHistory(`√(${currentExpression}) = ${result}`);
         currentExpression = result.toString();
+        resultDisplayed = true;
+        lastInputWasOperator = false;
         updateDisplay();
     } catch (error) {
         currentExpression = '오류';
@@ -87,6 +111,8 @@ function calculate() {
         const result = eval(currentExpression);
         addToHistory(`${currentExpression} = ${result}`);
         currentExpression = result.toString();
+        resultDisplayed = true;
+        lastInputWasOperator = false;
         updateDisplay();
     } catch (error) {
         currentExpression = '오류';
@@ -98,6 +124,7 @@ function calculate() {
 function addToHistory(entry) {
     let history = document.getElementById('history');
     history.innerHTML = entry + '<br>' + history.innerHTML;
+    history.scrollTop = 0; // 로그가 맨 위에 추가되도록 스크롤 위치 조정
 }
 
 function vibrateOnMobile() {
