@@ -1,14 +1,30 @@
 const mbtiColors = {
-    ISTJ: "#4682B4", ISFJ: "#5F9EA0", INFJ: "#6A5ACD", INTJ: "#483D8B",
-    ISTP: "#008080", ISFP: "#3CB371", INFP: "#9370DB", INTP: "#4169E1",
-    ESTP: "#FF4500", ESFP: "#FF6347", ENFP: "#FF69B4", ENTP: "#FF1493",
-    ESTJ: "#DC143C", ESFJ: "#CD5C5C", ENFJ: "#8B0000", ENTJ: "#B22222"
+    ISTJ: ["#4682B4", "#5F9EA0", "#6495ED", "#4169E1", "#1E90FF"],
+    ISFJ: ["#5F9EA0", "#20B2AA", "#48D1CC", "#40E0D0", "#00CED1"],
+    INFJ: ["#6A5ACD", "#483D8B", "#7B68EE", "#9370DB", "#8A2BE2"],
+    INTJ: ["#483D8B", "#4B0082", "#8B008B", "#9400D3", "#9932CC"],
+    ISTP: ["#008080", "#008B8B", "#00CED1", "#00FFFF", "#E0FFFF"],
+    ISFP: ["#3CB371", "#2E8B57", "#00FA9A", "#00FF7F", "#98FB98"],
+    INFP: ["#9370DB", "#BA55D3", "#DA70D6", "#EE82EE", "#DDA0DD"],
+    INTP: ["#4169E1", "#0000FF", "#0000CD", "#00008B", "#191970"],
+    ESTP: ["#FF4500", "#FF6347", "#FF7F50", "#FFA07A", "#FA8072"],
+    ESFP: ["#FF6347", "#FF7F50", "#FFA500", "#FFD700", "#FFDAB9"],
+    ENFP: ["#FF69B4", "#FF1493", "#DB7093", "#FFC0CB", "#FFB6C1"],
+    ENTP: ["#FF1493", "#FF00FF", "#FF00FF", "#8B008B", "#9932CC"],
+    ESTJ: ["#DC143C", "#B22222", "#8B0000", "#800000", "#A52A2A"],
+    ESFJ: ["#CD5C5C", "#F08080", "#FA8072", "#E9967A", "#FFA07A"],
+    ENFJ: ["#8B0000", "#800000", "#A52A2A", "#B22222", "#DC143C"],
+    ENTJ: ["#B22222", "#A52A2A", "#8B0000", "#800000", "#DC143C"]
 };
+
+let currentExpression = '';
+let lastResult = null;
 
 function showCalculator() {
     const mbti = document.getElementById('mbti-select').value;
     if (mbti) {
-        document.body.style.backgroundColor = mbtiColors[mbti];
+        const colorIndex = Math.floor(Math.random() * 5);
+        document.body.style.backgroundColor = mbtiColors[mbti][colorIndex];
         document.getElementById('mbti-selector').classList.add('hidden');
         document.getElementById('calculator-container').classList.remove('hidden');
         resetCalculator();
@@ -24,55 +40,64 @@ function showMBTISelector() {
 }
 
 function resetCalculator() {
-    document.getElementById('display').value = '';
+    currentExpression = '';
+    lastResult = null;
+    updateDisplay();
     document.getElementById('history').innerHTML = '';
 }
 
+function updateDisplay() {
+    document.getElementById('display').value = currentExpression;
+}
+
 function appendToDisplay(value) {
-    document.getElementById('display').value += value;
+    currentExpression += value;
+    updateDisplay();
     vibrateOnMobile();
 }
 
 function clearDisplay() {
-    document.getElementById('display').value = '';
+    currentExpression = '';
+    lastResult = null;
+    updateDisplay();
     vibrateOnMobile();
 }
 
 function backspace() {
-    let display = document.getElementById('display');
-    display.value = display.value.slice(0, -1);
+    currentExpression = currentExpression.slice(0, -1);
+    updateDisplay();
     vibrateOnMobile();
 }
 
 function calculateSquareRoot() {
-    let display = document.getElementById('display');
     try {
-        let result = Math.sqrt(eval(display.value));
-        display.value = result;
-        addToHistory(`√(${display.value}) = ${result}`);
+        const result = Math.sqrt(eval(currentExpression));
+        addToHistory(`√(${currentExpression}) = ${result}`);
+        currentExpression = result.toString();
+        updateDisplay();
     } catch (error) {
-        display.value = '오류';
+        currentExpression = '오류';
+        updateDisplay();
     }
     vibrateOnMobile();
 }
 
 function calculate() {
-    let display = document.getElementById('display');
     try {
-        let expression = display.value;
-        let result = eval(expression);
-        display.value = result;
-        addToHistory(`${expression} = ${result}`);
+        const result = eval(currentExpression);
+        addToHistory(`${currentExpression} = ${result}`);
+        currentExpression = result.toString();
+        updateDisplay();
     } catch (error) {
-        display.value = '오류';
+        currentExpression = '오류';
+        updateDisplay();
     }
     vibrateOnMobile();
 }
 
 function addToHistory(entry) {
     let history = document.getElementById('history');
-    history.innerHTML += entry + '<br>';
-    history.scrollTop = history.scrollHeight;
+    history.innerHTML = entry + '<br>' + history.innerHTML;
 }
 
 function vibrateOnMobile() {
